@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "task1": "nodemon ./src/task_1.1.ts",
+    "task2": "nodemon ./src/task_1.2.ts",
     "babel": "node_modules/.bin/babel src --out-dir lib --extensions .ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
