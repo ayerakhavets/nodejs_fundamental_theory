@@ -1,8 +1,8 @@
 import csv from "csvtojson";
 import fs from "fs";
 
-const CSV_PATH = "src/nodejs-hw1-ex1.csv";
-const TXT_PATH = "src/nodejs-hw1-ex1.txt";
+const CSV_PATH = "src/input_service/nodejs-hw1-ex1.csv";
+const TXT_PATH = "src/input_service/nodejs-hw1-ex1.txt";
 
 const errorListener = (error: Error) => console.error(error);
 
