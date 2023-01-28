@@ -1,7 +1,7 @@
 import PasswordValidator from "password-validator";
 import Joi from 'joi';
 import { createValidator } from 'express-joi-validation';
-import { ERROR_VALIDATING_PASSWORD } from "../../utils/constants";
+import { ERROR_VALIDATING_PASSWORD } from "../constants";
 
 const passwordSchema = new PasswordValidator().is().min(6).has().digits(2);
 

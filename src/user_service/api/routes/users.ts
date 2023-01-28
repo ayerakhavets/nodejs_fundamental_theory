@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import middlewares from "../middlewares";
 import usersService from "../../services/users";
-import { BAD_REQUEST, USER_DELETED, USER_NOT_FOUND, USER_UPDATED } from "../../utils/constants";
+import { BAD_REQUEST, USER_DELETED, USER_NOT_FOUND, USER_UPDATED } from "../constants";
 
 const route = Router();
 
@@ -26,8 +26,6 @@ export default (app: Router)=> {
     middlewares.validateBody,
     middlewares.validatePassword,
     async (req: Request, res: Response) => {
-      console.log('== ~ file: users.ts:25 ~ req.body', req.body);
-      console.log('== ~ file: users.ts:25 ~ req.params', req.params);
       if (req.params.id) {
         await usersService.addUser(req.params.id, req.body);
         res.status(200).send(USER_UPDATED);
