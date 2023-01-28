@@ -1,5 +1,6 @@
 # node.js
 node_modules/
+.env
 
 # Task output
 nodejs-hw1-ex1.txt
