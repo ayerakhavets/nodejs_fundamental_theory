@@ -1,6 +1,12 @@
-# node.js
+# OSX
+#
+.DS_Store
+
+# Node.js
+#
 node_modules/
 .env
 
 # Task output
+#
 nodejs-hw1-ex1.txt

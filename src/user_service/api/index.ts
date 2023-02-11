@@ -6,4 +6,4 @@ export default () => {
   user(app);
 
   return app;
-}
+};

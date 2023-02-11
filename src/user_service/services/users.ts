@@ -1,52 +1,51 @@
-import { Op } from "sequelize";
-import { getModel } from "../models/users";
+import { Op } from 'sequelize';
 
-const addUser = async (id, user) => {
-  const [_, created] = await getModel().findOrCreate({
-    where: { id },
-    defaults: user,
-  });
+export class UserService {
+  userModel: any;
 
-  if (!created) {
-    await await getModel().update(user, { where: { id } });
-  }
-}
-
-const findUserById = async (id) => {
-  const user = await getModel().findOne({ where: { id }});
-  return user;
-}
-
-const getUsers = async () => {
-  const users = await getModel().findAll({ where: { is_deleted: false }});
-  return users;
-}
-
-const getUsersByLogin = async (limit, loginSubString) => {
-  const users = await getModel().findAll({
-    limit,
-    order: [["login", "DESC"]],
-    where: {
-      login: { [Op.like]: `%${loginSubString}%` },
-    },
-  });
-  return users;
-}
-
-const softDeleteUser = async (id) => {
-  const user = await getModel().findOne({ where: { id } });
-  if (user) {
-    await getModel().update({ is_deleted: true }, { where: { id } });
-    return true;
+  constructor(userModel) {
+    this.userModel = userModel;
   }
 
-  return false;
-}
+  public async addUser(id, user) {
+    const [, created] = await this.userModel.findOrCreate({
+      where: { id },
+      defaults: user,
+    });
 
-export default {
-  addUser,
-  findUserById,
-  getUsers,
-  getUsersByLogin,
-  softDeleteUser,
+    if (!created) {
+      await this.userModel.update(user, { where: { id } });
+    }
+  }
+
+  public async findUserById(id) {
+    const user = await this.userModel.findOne({ where: { id } });
+    return user;
+  }
+
+  public async getUsers() {
+    const users = await this.userModel.findAll({ where: { is_deleted: false } });
+    return users;
+  }
+
+  public async getUsersByLogin(limit, loginSubString)  {
+    const users = await this.userModel.findAll({
+      limit,
+      order: [['login', 'DESC']],
+      where: {
+        login: { [Op.like]: `%${loginSubString}%` },
+      },
+    });
+    return users;
+  }
+
+  public async softDeleteUser(id)  {
+    const user = await this.userModel.findOne({ where: { id } });
+    if (user) {
+      await this.userModel.update({ is_deleted: true }, { where: { id } });
+      return true;
+    }
+
+    return false;
+  }
 }

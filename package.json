@@ -5,8 +5,9 @@
   "scripts": {
     "task1": "nodemon ./src/input_service/task_1.1.ts",
     "task2": "nodemon ./src/input_service/task_1.2.ts",
-    "user_service": "nodemon ./src/user_service/app.ts",
+    "start:dev": "nodemon ./src/user_service/app.ts",
     "babel": "node_modules/.bin/babel src --out-dir lib --extensions .ts",
+    "eslint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/ayerokhovets/nodejs_fundamental_theory#readme",
   "dependencies": {
+    "body-parser": "1.20.1",
     "csvtojson": "2.0.10",
     "dotenv": "16.0.3",
     "express": "4.18.2",
@@ -33,7 +35,13 @@
     "@babel/core": "7.20.5",
     "@babel/preset-env": "7.20.2",
     "@babel/preset-typescript": "7.18.6",
+    "@types/body-parser": "1.19.2",
     "@types/node": "18.11.9",
+    "@typescript-eslint/eslint-plugin": "5.51.0",
+    "@typescript-eslint/parser": "5.51.0",
+    "eslint": "8.34.0",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "eslint-plugin-import": "2.27.5",
     "nodemon": "2.0.20",
     "ts-node": "10.9.1",
     "typescript": "4.9.3"
