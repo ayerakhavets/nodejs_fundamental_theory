@@ -11,5 +11,6 @@ INSERT INTO groups (name, permissions) VALUES
   ('guest', ARRAY['READ'])
 
 SELECT * FROM groups
+SELECT * FROM "UserGroups"
 
 DROP TABLE groups

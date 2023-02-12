@@ -1,5 +1,12 @@
-import { Sequelize, DataTypes } from 'sequelize';
+import { DataTypes, Model, InferAttributes } from 'sequelize';
+import { sequelize } from '../services/database';
 import { attributes } from './constants';
+
+export interface IUser extends Model<InferAttributes<IUser>, IUser> {
+  id: number;
+  getGroups: () => Promise<any>;
+  removeGroup: (user) => void;
+}
 
 const userSchema = {
   // Model attributes
@@ -13,5 +20,12 @@ const userSchema = {
 
 // A model is an abstraction that represents a table in your database.
 // Paranoid tables perform a soft-deletion of records, instead of a hard-deletion.
-export default (sequelize: Sequelize) =>
-  sequelize.define('users', userSchema, { paranoid: true, deletedAt: 'deleted_at', ...attributes });
+export const User = sequelize.define('users', userSchema, { paranoid: true, deletedAt: 'deleted_at', ...attributes });
+
+User.beforeDestroy((user: IUser) => {
+  user.getGroups().then((groups) => {
+    groups.forEach((group) => {
+      user.removeGroup(group);
+    });
+  });
+});

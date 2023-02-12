@@ -4,7 +4,7 @@ CREATE TABLE users (
   login varchar(40),
   password varchar(40),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP,
   deleted_at TIMESTAMP
 )
 

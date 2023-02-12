@@ -1,11 +1,14 @@
 import { Router, Request, Response } from 'express';
 import middlewares from '../middlewares';
-import { userService } from '../../services';
 import { BAD_REQUEST, USER_DELETED, USER_NOT_FOUND, USER_UPDATED } from '../constants';
+import { UserService } from '../../services/user';
+import { User } from '../../models/user';
 
 const route = Router();
 
 export default (app: Router) => {
+  const userService = new UserService(User);
+
   app.use('/users', route);
 
   route.get('/', async (_: Request, res: Response) => {
