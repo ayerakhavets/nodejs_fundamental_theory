@@ -1,7 +1,9 @@
 import { Sequelize } from 'sequelize';
 import config from '../config';
-import initUserModel from './users';
+import initGroupModel from './group';
+import initUserModel from './user';
 
 export const sequelize = new Sequelize(config.databaseUrl);
 
-export const User =  initUserModel(sequelize);
+export const Group = initGroupModel(sequelize);
+export const User = initUserModel(sequelize);

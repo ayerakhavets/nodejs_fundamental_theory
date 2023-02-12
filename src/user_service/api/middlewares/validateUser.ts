@@ -7,6 +7,7 @@ const passwordSchema = new PasswordValidator().is().min(6).has().digits(2);
 
 /**
  * Validate password to be strong enough.
+ *
  * @param req Express req Object
  * @param res Express res Object
  * @param next Express next Function
@@ -29,4 +30,4 @@ const userSchema = Joi.object({
 });
 const joiValidator = createValidator();
 
-export const validateBody = joiValidator.body(userSchema);
+export const validateUserBody = joiValidator.body(userSchema);

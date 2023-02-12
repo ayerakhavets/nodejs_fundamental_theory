@@ -4,7 +4,6 @@ import config from './config';
 
 async function startServer() {
   const app = express();
-
   await loaders({ expressApp: app });
 
   app.listen(config.port, () => {

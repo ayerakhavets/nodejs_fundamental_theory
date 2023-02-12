@@ -5,16 +5,20 @@ import { BAD_REQUEST, USER_DELETED, USER_NOT_FOUND, USER_UPDATED } from '../cons
 
 const route = Router();
 
-export default (app: Router)=> {
+export default (app: Router) => {
   app.use('/users', route);
 
-  route.get('/', async (_, res: Response) => {
-    const users = await userService.getUsers();
-    res.send(users);
+  route.get('/', async (_: Request, res: Response) => {
+    try {
+      const users = await userService.getUsers();
+      res.send(users);
+    } catch (error) {
+      res.status(500).send(error);
+    }
   });
 
   route.get('/:id', async (req: Request, res: Response) => {
-    const user = await userService.findUserById(req.params.id);
+    const user = await userService.getUserById(req.params.id);
     if (user) {
       res.send(user);
     } else {
@@ -22,21 +26,25 @@ export default (app: Router)=> {
     }
   });
 
-  route.post('/add/:id', [
-    middlewares.validateBody,
+  route.post('/:id', [
+    middlewares.validateUserBody,
     middlewares.validatePassword,
     async (req: Request, res: Response) => {
-      if (req.params.id) {
-        await userService.addUser(req.params.id, req.body);
-        res.status(200).send(USER_UPDATED);
-      } else {
-        res.status(400).send(BAD_REQUEST);
+      try {
+        if (req.params.id) {
+          await userService.createUser(req.params.id, req.body);
+          res.status(200).send(USER_UPDATED);
+        } else {
+          res.status(400).send(BAD_REQUEST);
+        }
+      } catch (error) {
+        res.status(500).send(error);
       }
     },
   ]);
 
   route.delete('/:id', async (req: Request, res: Response) => {
-    const isDeleted = await userService.softDeleteUser(req.params.id);
+    const isDeleted = await userService.deleteUser(req.params.id);
     if (isDeleted) {
       res.status(200).send(USER_DELETED);
     } else {

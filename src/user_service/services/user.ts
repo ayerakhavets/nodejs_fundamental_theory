@@ -1,13 +1,11 @@
 import { Op } from 'sequelize';
 
 export class UserService {
-  userModel: any;
-
-  constructor(userModel) {
+  constructor(private userModel) {
     this.userModel = userModel;
   }
 
-  public async addUser(id, user) {
+  public async createUser(id, user) {
     const [, created] = await this.userModel.findOrCreate({
       where: { id },
       defaults: user,
@@ -18,17 +16,22 @@ export class UserService {
     }
   }
 
-  public async findUserById(id) {
+  // A soft-deletion will happen: UPDATE "posts" SET "deletedAt"=[timestamp] WHERE "deletedAt" IS NULL AND "id" = id.
+  public async deleteUser(id) {
+    return this.userModel.destroy({ where: { id } });
+  }
+
+  public async getUserById(id) {
     const user = await this.userModel.findOne({ where: { id } });
     return user;
   }
 
   public async getUsers() {
-    const users = await this.userModel.findAll({ where: { is_deleted: false } });
+    const users = await this.userModel.findAll({});
     return users;
   }
 
-  public async getUsersByLogin(limit, loginSubString)  {
+  public async getUsersByLogin(limit, loginSubString) {
     const users = await this.userModel.findAll({
       limit,
       order: [['login', 'DESC']],
@@ -37,15 +40,5 @@ export class UserService {
       },
     });
     return users;
-  }
-
-  public async softDeleteUser(id)  {
-    const user = await this.userModel.findOne({ where: { id } });
-    if (user) {
-      await this.userModel.update({ is_deleted: true }, { where: { id } });
-      return true;
-    }
-
-    return false;
   }
 }
