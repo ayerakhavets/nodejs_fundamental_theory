@@ -1,6 +1,8 @@
-import { validatePassword, validateBody } from "./validateNewUser";
+import { validateGroupBody } from './validateGroup';
+import { validatePassword, validateUserBody } from './validateUser';
 
 export default {
-  validateBody,
+  validateGroupBody,
   validatePassword,
+  validateUserBody,
 };
