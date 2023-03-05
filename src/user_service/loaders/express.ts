@@ -18,13 +18,15 @@ export default ({ app }: { app: express.Application }) => {
   // Load API routes.
   app.use(config.api.prefix, routes());
 
-  app.use(expressWinston.logger({
-    winstonInstance: logger,
-    meta: true,
-    msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
-    expressFormat: true,
-    colorize: false,
-  }));
+  app.use(
+    expressWinston.logger({
+      winstonInstance: logger,
+      meta: true,
+      msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+      expressFormat: true,
+      colorize: false,
+    }),
+  );
 
   // Custom error handler.
   app.use(middlewares.errorHandler);
