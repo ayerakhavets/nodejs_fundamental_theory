@@ -12,12 +12,6 @@ export default ({ app }: { app: express.Application }) => {
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  // Measure execution time for each route.
-  app.use(middlewares.trackExecutionTime);
-
-  // Load API routes.
-  app.use(config.api.prefix, routes());
-
   app.use(
     expressWinston.logger({
       winstonInstance: logger,
@@ -28,8 +22,10 @@ export default ({ app }: { app: express.Application }) => {
     }),
   );
 
-  // Custom error handler.
-  app.use(middlewares.errorHandler);
+  // Load API routes.
+  app.use(config.api.prefix, routes());
+
+  app.use(middlewares.commonErrorHandler);
 
   // Event is emitted whenever a Promise is rejected and no error handler is attached to it.
   process.on('unhandledRejection', (reason, promise) => {
@@ -43,5 +39,5 @@ export default ({ app }: { app: express.Application }) => {
     process.exit(1);
   });
 
-  console.log('✌️ Express loaded');
+  logger.info('✌️ Express loaded');
 };

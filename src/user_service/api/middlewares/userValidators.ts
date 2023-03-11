@@ -12,7 +12,7 @@ const passwordSchema = new PasswordValidator().is().min(6).has().digits(2);
  * @param res Express res Object
  * @param next Express next Function
  */
-export const validatePassword = (req, res, next) => {
+export const passwordValidator = (req, res, next) => {
   const isValidated = passwordSchema.validate(req.body.password, { details: true });
   if (Array.isArray(isValidated) && isValidated.length) {
     const errorMessages: string = isValidated.map((value) => value.message).join('\n');
@@ -30,4 +30,4 @@ const userSchema = Joi.object({
 });
 const joiValidator = createValidator();
 
-export const validateUserBody = joiValidator.body(userSchema);
+export const userBodyValidator = joiValidator.body(userSchema);

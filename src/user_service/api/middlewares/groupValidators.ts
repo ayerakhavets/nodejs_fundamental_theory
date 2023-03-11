@@ -12,4 +12,4 @@ const groupSchema = Joi.object({
 });
 const joiValidator = createValidator();
 
-export const validateGroupBody = joiValidator.body(groupSchema);
+export const groupBodyValidator = joiValidator.body(groupSchema);

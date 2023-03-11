@@ -34,8 +34,8 @@ export default (app: Router) => {
   });
 
   route.post('/:id', [
-    middlewares.validateUserBody,
-    middlewares.validatePassword,
+    middlewares.userBodyValidator,
+    middlewares.passwordValidator,
     async (req: Request, res: Response, next: NextFunction) => {
       try {
         if (req.params.id) {
