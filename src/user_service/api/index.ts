@@ -4,8 +4,8 @@ import user from './routes/user';
 
 export default () => {
   const app = Router();
-  user(app);
   group(app);
+  user(app);
 
   return app;
 };

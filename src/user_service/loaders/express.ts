@@ -29,7 +29,7 @@ export default ({ app }: { app: express.Application }) => {
 
   // Event is emitted whenever a Promise is rejected and no error handler is attached to it.
   process.on('unhandledRejection', (reason, promise) => {
-    logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    logger.error(`Unhandled Rejection at: ${promise}. Reason: ${reason}`);
     process.exit(1);
   });
 

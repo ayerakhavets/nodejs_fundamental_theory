@@ -13,7 +13,7 @@ export default (app: Router) => {
 
   app.use('/groups', route);
 
-  route.get('/', async (_: Request, res: Response, next: NextFunction) => {
+  route.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
       const groups = await groupService.getGroups();
       res.send(groups);
