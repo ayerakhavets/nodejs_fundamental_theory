@@ -1,5 +1,8 @@
 /// General
 export const BAD_REQUEST = 'Bad request.';
+export const INTERNAL_SERVER_ERROR = 'Internal Server Error';
+/// Auth
+export const INVALID_CREDENTIALS = 'Invalid username or password';
 /// Group
 export const GROUP_DELETED = 'Group is deleted.';
 export const GROUP_NOT_FOUND = 'Group not found.';

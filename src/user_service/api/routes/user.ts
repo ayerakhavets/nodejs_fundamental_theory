@@ -11,6 +11,8 @@ export default (app: Router) => {
 
   app.use('/users', route);
 
+  route.use(middlewares.checkAuthentication);
+
   route.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
       const users = await userService.getUsers();

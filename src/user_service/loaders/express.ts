@@ -2,6 +2,7 @@ import process from 'node:process';
 import express from 'express';
 import expressWinston from 'express-winston';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import config from '../config';
 import middlewares from '../api/middlewares';
 import routes from '../api';
@@ -11,6 +12,10 @@ export default ({ app }: { app: express.Application }) => {
   // Transforms the raw string of req.body into json
   app.use(express.json());
   app.use(bodyParser.urlencoded({ extended: true }));
+
+  // Allow requests from other domains.
+  // NOTE: security vulnerability w/o proper config.
+  app.use(cors());
 
   app.use(
     expressWinston.logger({
