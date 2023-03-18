@@ -13,6 +13,8 @@ export default (app: Router) => {
 
   app.use('/groups', route);
 
+  route.use(middlewares.checkAuthentication);
+
   route.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
       const groups = await groupService.getGroups();

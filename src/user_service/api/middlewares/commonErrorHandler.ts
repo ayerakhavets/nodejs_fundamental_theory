@@ -1,4 +1,5 @@
 import { logger } from '../../services/logger';
+import { INTERNAL_SERVER_ERROR } from '../constants';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function commonErrorHandler(err, req, res, next) {
@@ -7,5 +8,5 @@ export function commonErrorHandler(err, req, res, next) {
   const logMeta = Object.assign({}, req.meta || {}, { error: message, stack: stack });
 
   logger.error(logMeta);
-  res.status(500).send({ error: 'Internal Server Error' });
+  res.status(500).send({ error: INTERNAL_SERVER_ERROR });
 }
