@@ -1,4 +1,4 @@
-import sinon  from 'sinon';
+import sinon from 'sinon';
 import { NextFunction, Request, Response } from 'express';
 import { GROUP_DELETED, GROUP_UPDATED } from '../constants';
 import { GroupService } from '../../services/group';
@@ -90,7 +90,10 @@ describe('Group controller', () => {
 
   describe('getGroups', () => {
     it('calls getGroups on the GroupService with the correct status', async () => {
-      const GROUPS = [{ id: 1, name: 'Admin', permissions: [] }, { id: 2, name: 'Guest', permissions: [] }];
+      const GROUPS = [
+        { id: 1, name: 'Admin', permissions: [] },
+        { id: 2, name: 'Guest', permissions: [] },
+      ];
       myServiceStub.getGroups.resolves(GROUPS);
 
       await groupController.getGroups(req, res, next);

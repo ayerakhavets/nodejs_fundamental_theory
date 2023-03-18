@@ -123,5 +123,4 @@ describe('User controller', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
-
 });

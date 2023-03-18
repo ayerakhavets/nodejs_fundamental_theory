@@ -18,7 +18,7 @@ async function createUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function deleteUser(req: Request, res: Response, next: NextFunction)  {
+async function deleteUser(req: Request, res: Response, next: NextFunction) {
   try {
     const isDeleted = await userService.deleteUser(req.params.id);
     if (isDeleted) {
@@ -53,7 +53,7 @@ async function getUsers(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function getUsersSortedByLogin(req: Request, res: Response, next: NextFunction)  {
+async function getUsersSortedByLogin(req: Request, res: Response, next: NextFunction) {
   try {
     const { limit, loginSubString } = req.query;
     if (limit && loginSubString) {

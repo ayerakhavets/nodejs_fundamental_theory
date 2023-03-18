@@ -13,7 +13,7 @@ export class GroupController {
     }
   }
 
-  public async createGroup(req: Request, res: Response, next: NextFunction)  {
+  public async createGroup(req: Request, res: Response, next: NextFunction) {
     try {
       await this.GroupService.createGroup(req.params.id, req.body);
       res.status(200).json(GROUP_UPDATED);
@@ -35,7 +35,7 @@ export class GroupController {
     }
   }
 
-  public async getGroupById(req: Request, res: Response, next: NextFunction)  {
+  public async getGroupById(req: Request, res: Response, next: NextFunction) {
     try {
       const group = await this.GroupService.getGroupById(req.params.id);
       if (group) {

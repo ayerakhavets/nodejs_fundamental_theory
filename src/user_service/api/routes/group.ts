@@ -10,7 +10,7 @@ const route = Router();
 
 export default (app: Router) => {
   const groupService = new GroupService(User, Group, databaseService);
-  const groupController =  new GroupController(groupService);
+  const groupController = new GroupController(groupService);
 
   app.use('/groups', route);
 
@@ -20,10 +20,7 @@ export default (app: Router) => {
 
   route.get('/:id', groupController.getGroupById);
 
-  route.post('/:id', [
-    middlewares.groupBodyValidator,
-    groupController.createGroup,
-  ]);
+  route.post('/:id', [middlewares.groupBodyValidator, groupController.createGroup]);
 
   route.delete('/:id', groupController.deleteGroup);
 

@@ -13,11 +13,7 @@ export default (app: Router) => {
 
   route.get('/:id', user.getUserById);
 
-  route.post('/:id', [
-    middlewares.userBodyValidator,
-    middlewares.passwordValidator,
-    user.createUser,
-  ]);
+  route.post('/:id', [middlewares.userBodyValidator, middlewares.passwordValidator, user.createUser]);
 
   route.delete('/:id', user.deleteUser);
 
