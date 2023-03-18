@@ -1,24 +1,26 @@
 import { NextFunction, Request, Response } from 'express';
-import { User } from '../../models/user';
+import { UserService } from '../../services/user';
 import { USER_DELETED, USER_UPDATED } from '../constants';
-import userController from '../controllers/user';
+import { UserController } from '../controllers/user';
 
-// Mock the Request and Response objects
-const req = {} as Request;
-const res = { status: jest.fn().mockReturnThis(), json: jest.fn() } as unknown as Response;
-const next: NextFunction = jest.fn();
-
-// Mock the User model
-jest.mock('../../models/user', () => ({
-  User: {
-    destroy: jest.fn(),
-    findAll: jest.fn(),
-    findOne: jest.fn(),
-    findOrCreate: jest.fn(),
+// Mock the UserService
+jest.mock('../../services/user', () => ({
+  UserService: {
+    deleteUser: jest.fn(),
+    createUser: jest.fn(),
+    getUserById: jest.fn(),
+    getUsers: jest.fn(),
   },
 }));
 
 describe('User controller', () => {
+  const userController = new UserController(UserService);
+
+  // Mock the Request and Response objects
+  const req = {} as Request;
+  const res = { status: jest.fn().mockReturnThis(), json: jest.fn() } as unknown as Response;
+  const next: NextFunction = jest.fn();
+
   afterAll(() => {
     jest.clearAllMocks();
   });
@@ -30,7 +32,7 @@ describe('User controller', () => {
   describe('getUsers', () => {
     it('returns an array of users', async () => {
       const usersData = [{ id: 1, age: 18, login: 'login', password: 'password' }];
-      User.findAll.mockResolvedValueOnce(usersData);
+      UserService.getUsers.mockResolvedValueOnce(usersData);
 
       await userController.getUsers(req, res, next);
 
@@ -38,7 +40,7 @@ describe('User controller', () => {
       expect(res.json).toHaveBeenCalledWith(usersData);
     });
     it('returns an empty array if there are no users', async () => {
-      User.findAll.mockResolvedValueOnce([]);
+      UserService.getUsers.mockResolvedValueOnce([]);
 
       await userController.getUsers(req, res, next);
 
@@ -47,7 +49,7 @@ describe('User controller', () => {
     });
     it('returns an error if findAll fails', async () => {
       const error = new Error('Database error');
-      User.findAll.mockRejectedValueOnce(error);
+      UserService.getUsers.mockRejectedValueOnce(error);
 
       await userController.getUsers(req, res, next);
 
@@ -58,7 +60,7 @@ describe('User controller', () => {
   describe('getUserById', () => {
     it('returns a user object', async () => {
       const user = { id: 1, age: 18, login: 'login', password: 'password' };
-      User.findOne.mockResolvedValueOnce(user);
+      UserService.getUserById.mockResolvedValueOnce(user);
 
       req.params = { id: '1' };
       await userController.getUserById(req, res, next);
@@ -67,9 +69,9 @@ describe('User controller', () => {
       expect(res.json).toHaveBeenCalledWith(user);
     });
 
-    it('returns an error if .findOne() fails', async () => {
+    it('returns an error if getUserById fails', async () => {
       const error = new Error('Database error');
-      User.findOne.mockRejectedValueOnce(error);
+      UserService.getUserById.mockRejectedValueOnce(error);
 
       req.params = { id: '1' };
       await userController.getUserById(req, res, next);
@@ -82,7 +84,7 @@ describe('User controller', () => {
     it('adds a user to the database', async () => {
       const newUser = { age: 18, login: 'login', password: 'password' };
       const createdUser = [null, { id: 1, ...newUser }];
-      User.findOrCreate.mockResolvedValueOnce(createdUser);
+      UserService.createUser.mockResolvedValueOnce(createdUser);
 
       req.params.id = '1';
       req.body = newUser;
@@ -94,7 +96,7 @@ describe('User controller', () => {
 
     it('returns an error if create fails', async () => {
       const error = new Error('Database error');
-      User.findOrCreate.mockRejectedValueOnce(error);
+      UserService.createUser.mockRejectedValueOnce(error);
 
       req.body = { name: 'John Doe', email: 'johndoe@example.com' };
       await userController.createUser(req, res, next);
@@ -105,7 +107,7 @@ describe('User controller', () => {
 
   describe('deleteUser', () => {
     it('deletes a user', async () => {
-      User.destroy.mockResolvedValueOnce(true);
+      UserService.deleteUser.mockResolvedValueOnce(true);
 
       req.params = { id: '1' };
       await userController.deleteUser(req, res, next);
@@ -116,7 +118,7 @@ describe('User controller', () => {
 
     it('returns an error if destroy fails', async () => {
       const error = new Error('Database error');
-      User.destroy.mockRejectedValueOnce(error);
+      UserService.deleteUser.mockRejectedValueOnce(error);
 
       await userController.deleteUser(req, res, next);
 

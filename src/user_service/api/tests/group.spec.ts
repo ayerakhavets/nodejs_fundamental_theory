@@ -5,8 +5,8 @@ import { GroupService } from '../../services/group';
 import { GroupController } from '../controllers/group';
 
 describe('Group controller', () => {
-  const myServiceStub = sinon.createStubInstance(GroupService);
-  const groupController = new GroupController(myServiceStub);
+  const groupServiceStub = sinon.createStubInstance(GroupService);
+  const groupController = new GroupController(groupServiceStub);
 
   // Mock the Request and Response objects
   const req = {} as Request;
@@ -15,9 +15,13 @@ describe('Group controller', () => {
   const next: NextFunction = jest.fn();
 
   afterEach(() => {
-    myServiceStub.deleteGroup.reset();
-    myServiceStub.getGroupById.reset();
-    myServiceStub.getGroups.reset();
+    groupServiceStub.deleteGroup.reset();
+    groupServiceStub.getGroupById.reset();
+    groupServiceStub.getGroups.reset();
+  });
+
+  afterAll(() => {
+    sinon.restore();
   });
 
   describe('addUserToGroup', () => {
@@ -25,7 +29,7 @@ describe('Group controller', () => {
     req.body = { userIds: ['1', '2'] };
 
     afterEach(() => {
-      myServiceStub.addUsersToGroup.reset();
+      groupServiceStub.addUsersToGroup.reset();
     });
 
     afterAll(() => {
@@ -34,7 +38,7 @@ describe('Group controller', () => {
 
     it('sends a 400 response on error', async () => {
       // Mock the addUsersToGroup method to reject with an error.
-      myServiceStub.addUsersToGroup.rejects(new Error('Unable to get user'));
+      groupServiceStub.addUsersToGroup.rejects(new Error('Unable to get user'));
 
       await groupController.addUserToGroup(req, res);
 
@@ -45,7 +49,7 @@ describe('Group controller', () => {
     it('calls addUsersToGroup on the GroupService with the correct arguments', async () => {
       await groupController.addUserToGroup(req, res);
 
-      sinon.assert.calledWith(myServiceStub.addUsersToGroup, req.params.groupId, req.body.userIds);
+      sinon.assert.calledWith(groupServiceStub.addUsersToGroup, req.params.groupId, req.body.userIds);
       sinon.assert.calledWith(res.sendStatus, 200);
     });
   });
@@ -56,7 +60,7 @@ describe('Group controller', () => {
       req.body = { name: 'group-name' };
       await groupController.createGroup(req, res, next);
 
-      sinon.assert.calledWith(myServiceStub.createGroup, req.params.id, req.body);
+      sinon.assert.calledWith(groupServiceStub.createGroup, req.params.id, req.body);
       sinon.assert.calledWith(res.status, 200);
       sinon.assert.calledWith(resStatus.json, GROUP_UPDATED);
     });
@@ -64,12 +68,12 @@ describe('Group controller', () => {
 
   describe('deleteGroup', () => {
     it('calls deleteGroup on the GroupService with the correct arguments', async () => {
-      myServiceStub.deleteGroup.resolves(true);
+      groupServiceStub.deleteGroup.resolves(true);
 
       req.params = { id: '1' };
       await groupController.deleteGroup(req, res, next);
 
-      sinon.assert.calledWith(myServiceStub.deleteGroup, req.params.id);
+      sinon.assert.calledWith(groupServiceStub.deleteGroup, req.params.id);
       sinon.assert.calledWith(res.status, 200);
       sinon.assert.calledWith(resStatus.json, GROUP_DELETED);
     });
@@ -77,12 +81,12 @@ describe('Group controller', () => {
 
   describe('getGroupById', () => {
     it('calls getGroupById on the GroupService with the correct arguments', async () => {
-      myServiceStub.getGroupById.resolves({ id: 1, name: 'Admin', permissions: [] });
+      groupServiceStub.getGroupById.resolves({ id: 1, name: 'Admin', permissions: [] });
 
       req.params = { id: '1' };
       await groupController.getGroupById(req, res, next);
 
-      sinon.assert.calledWith(myServiceStub.getGroupById, req.params.id);
+      sinon.assert.calledWith(groupServiceStub.getGroupById, req.params.id);
       sinon.assert.calledWith(res.status, 200);
       sinon.assert.calledWith(resStatus.json, { id: 1, name: 'Admin', permissions: [] });
     });
@@ -94,7 +98,7 @@ describe('Group controller', () => {
         { id: 1, name: 'Admin', permissions: [] },
         { id: 2, name: 'Guest', permissions: [] },
       ];
-      myServiceStub.getGroups.resolves(GROUPS);
+      groupServiceStub.getGroups.resolves(GROUPS);
 
       await groupController.getGroups(req, res, next);
 
