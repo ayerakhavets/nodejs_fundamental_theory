@@ -1,8 +1,10 @@
-import { validateGroupBody } from './validateGroup';
-import { validatePassword, validateUserBody } from './validateUser';
+import { commonErrorHandler } from './commonErrorHandler';
+import { groupBodyValidator } from './groupValidators';
+import { passwordValidator, userBodyValidator } from './userValidators';
 
 export default {
-  validateGroupBody,
-  validatePassword,
-  validateUserBody,
+  commonErrorHandler,
+  groupBodyValidator,
+  passwordValidator,
+  userBodyValidator,
 };

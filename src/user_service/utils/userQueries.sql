@@ -8,11 +8,11 @@ CREATE TABLE users (
   deleted_at TIMESTAMP
 )
 
-INSERT INTO users (age, login, password) VALUES
-  (18, 'login1', 'password1'),
-  (19, 'login2', 'password2'),
-  (20, 'login3', 'password3'),
-  (21, 'login4', 'password4')
+INSERT INTO users (id, age, login, password) VALUES
+  (1, 18, 'login1', 'password1'),
+  (2, 19, 'login2', 'password2'),
+  (3, 20, 'login3', 'password3'),
+  (4, 21, 'login4', 'password4')
 
 SELECT * FROM users
 
